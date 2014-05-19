@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
+-- version 3.2.4
 -- http://www.phpmyadmin.net
 --
--- Máquina: 127.0.0.1
--- Data de Criação: 14-Nov-2013 às 16:40
--- Versão do servidor: 5.5.32
--- versão do PHP: 5.4.19
+-- Servidor: localhost
+-- Tempo de Geração: Mai 19, 2014 as 12:31 AM
+-- Versão do Servidor: 5.1.44
+-- Versão do PHP: 5.3.1
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17,10 +16,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de Dados: `livraria`
+-- Banco de Dados: `livraria`
 --
-CREATE DATABASE IF NOT EXISTS `livraria` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `livraria`;
 
 -- --------------------------------------------------------
 
@@ -62,13 +59,33 @@ INSERT INTO `categoria` (`cod`, `nome`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `funcionario`
+--
+
+CREATE TABLE IF NOT EXISTS `funcionario` (
+  `matricula` int(11) NOT NULL AUTO_INCREMENT,
+  `senha` int(11) NOT NULL,
+  `nome` varchar(30) NOT NULL,
+  PRIMARY KEY (`matricula`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `funcionario`
+--
+
+INSERT INTO `funcionario` (`matricula`, `senha`, `nome`) VALUES
+(1, 999, 'usuario');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `livro`
 --
 
 CREATE TABLE IF NOT EXISTS `livro` (
   `titulo` int(3) DEFAULT NULL,
   `dataPublicacao` date DEFAULT NULL,
-  `editora` int(3) DEFAULT NULL,
+  `editora` varchar(300) NOT NULL,
   `precoVenda` double DEFAULT NULL,
   `resumo` varchar(255) DEFAULT NULL,
   `indice` varchar(255) DEFAULT NULL,
@@ -78,15 +95,17 @@ CREATE TABLE IF NOT EXISTS `livro` (
   `formato` varchar(50) DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `categoria` varchar(20) NOT NULL,
+  `quantidade` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Extraindo dados da tabela `livro`
 --
 
-INSERT INTO `livro` (`titulo`, `dataPublicacao`, `editora`, `precoVenda`, `resumo`, `indice`, `precoCusto`, `vendido`, `autor`, `formato`, `id`, `categoria`) VALUES
-(1, '2000-09-10', 0, 345, 'Caique fez merda e agora não fuinciona.', '1', 129, 0, 1, 'brochura', 1, 'Hj-65');
+INSERT INTO `livro` (`titulo`, `dataPublicacao`, `editora`, `precoVenda`, `resumo`, `indice`, `precoCusto`, `vendido`, `autor`, `formato`, `id`, `categoria`, `quantidade`) VALUES
+(1, '2000-09-10', 'Abril', 345, 'Caique fez merda e agora não fuinciona.', '1', 129, 0, 1, 'brochura', 1, 'Hj-65', 0),
+(3, '1999-09-09', 'Abril', 120, 'Resumo', 'Indice', 100, NULL, 1, 'Capa dura', 2, 'Ficção', 0);
 
 -- --------------------------------------------------------
 
@@ -96,11 +115,20 @@ INSERT INTO `livro` (`titulo`, `dataPublicacao`, `editora`, `precoVenda`, `resum
 
 CREATE TABLE IF NOT EXISTS `pedido` (
   `codItemPedido` int(11) NOT NULL AUTO_INCREMENT,
+  `data` date NOT NULL,
   `codPedido` int(11) NOT NULL,
   `codUsuario` int(11) NOT NULL,
   `codLivro` int(11) NOT NULL,
+  `qtd` int(11) NOT NULL,
   PRIMARY KEY (`codItemPedido`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+--
+-- Extraindo dados da tabela `pedido`
+--
+
+INSERT INTO `pedido` (`codItemPedido`, `data`, `codPedido`, `codUsuario`, `codLivro`, `qtd`) VALUES
+(9, '2013-11-22', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -113,14 +141,16 @@ CREATE TABLE IF NOT EXISTS `titulo` (
   `cod` int(3) NOT NULL AUTO_INCREMENT,
   `isbn` varchar(20) NOT NULL,
   PRIMARY KEY (`cod`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Extraindo dados da tabela `titulo`
 --
 
 INSERT INTO `titulo` (`titulo`, `cod`, `isbn`) VALUES
-('Titulo', 1, '');
+('Titulo', 1, ''),
+('As memorias de um gigolo', 2, '1234-1234-1235-5321'),
+('As cronicas de narnia', 3, '1234-6542-8765-3333');
 
 -- --------------------------------------------------------
 
@@ -145,7 +175,3 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 INSERT INTO `usuario` (`nome`, `dataNasc`, `cpf`, `endereco`, `login`, `senha`, `cod`) VALUES
 ('david', '1993-01-01', '12312312340', 'rua paris,45', 'david', 'david', 1);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

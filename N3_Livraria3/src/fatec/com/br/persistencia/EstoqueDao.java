@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  *
- * @author gregory
+ * @author Guilherme
  */
 public class EstoqueDao implements DAO<Object>{
 
